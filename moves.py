@@ -1,10 +1,10 @@
 import random
+import copy
 
 
-def move_right(game):
+def move_right(game, score = 0):
     change = False
 
-    init_game = game
     for row in range(4):
         col = 3
         combined = False
@@ -29,18 +29,18 @@ def move_right(game):
                 col -= 1
                 combined = True
                 change = True
+                score += val * 2
 
     if change:
-        return add_block(game)
+        return add_block(game), score
 
     else:
-        return game
+        return game, score
 
 
-def move_left(game):
+def move_left(game, score = 0):
     change = False
 
-    init_game = game
     for row in range(4):
         col = 0
         combined = False
@@ -65,15 +65,16 @@ def move_left(game):
                 col += 1
                 combined = True
                 change = True
+                score += val * 2
 
     if change:
-        return add_block(game)
+        return add_block(game), score
 
     else:
-        return game
+        return game, score
 
 
-def move_up(game):
+def move_up(game, score = 0):
     change = False
     for row in range(4):
         col = 0
@@ -99,15 +100,16 @@ def move_up(game):
                 col += 1
                 combined = True
                 change = True
+                score += val * 2
 
     if change:
-        return add_block(game)
+        return add_block(game), score
 
     else:
-        return game
+        return game, score
 
 
-def move_down(game):
+def move_down(game, score = 0):
     change = False
     for row in range(4):
         col = 3
@@ -132,12 +134,13 @@ def move_down(game):
                 col -= 1
                 combined = True
                 change = True
+                score += val * 2
 
     if change:
-        return add_block(game)
+        return add_block(game), score
 
     else:
-        return game
+        return game, score
 
 
 def add_block(game):
@@ -156,3 +159,22 @@ def add_block(game):
     game[coord[0]][coord[1]] = new_block
 
     return game
+
+
+def is_game_over(game):
+    g = copy.deepcopy(game)
+
+    left = move_left(g)[0]
+    right = move_right(g)[0]
+    up = move_up(g)[0]
+    down = move_down(g)[0]
+
+    if left == game and right == game and up == game and down == game:
+        return True
+    else:
+        return False
+
+
+def show_board(game):
+    for i in game:
+        print(i)
