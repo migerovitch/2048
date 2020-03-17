@@ -9,39 +9,23 @@ def main():
     # Initialise screen
     pygame.init()
     screen = pygame.display.set_mode((300, 200))
-    while 1:
+    font = pygame.font.Font(None, 30)
+
+    while True:
         # Fill background
         background = pygame.Surface(screen.get_size())
         background = background.convert()
         background.fill((250, 250, 250))
 
-        for row in range(4):
-
-
-        # Display some text
-        font = pygame.font.Font(None, 30)
-        text = font.render(str(game[0]), 1, (10, 10, 10))
-        text2 = font.render(str(game[1]), 1, (10, 10, 10))
-        text3 = font.render(str(game[2]), 1, (10, 10, 10))
-        text4 = font.render(str(game[3]), 1, (10, 10, 10))
-
-        textpos = text.get_rect()
-        background.blit(text, (100,10))
-
-        textpos2 = text2.get_rect()
-        background.blit(text2, (100,40))
-
-        textpos3 = text3.get_rect()
-        background.blit(text3, (100, 70))
-
-        textpos4 = text4.get_rect()
-        background.blit(text4, (100, 100))
+        for col in range(4):
+            for row in range(4):
+                text = font.render(str(game[col][row]), 1, (10, 10, 10))
+                background.blit(text, (100+40*row, 20+40*col))
 
         # Blit everything to the screen
         screen.blit(background, (0, 0))
         pygame.display.flip()
 
-        # Event loop
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
