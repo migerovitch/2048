@@ -1,4 +1,4 @@
 .idea/
 *.pyc
-model
+model.py
 __pycache__/
