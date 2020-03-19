@@ -1,10 +1,15 @@
 from moves import *
 import pygame
+from model import *
+import numpy as np
 
 
-def game_loop(player = "human"):
+def game_loop(player="human"):
     grid = [[0, 0, 0, 0] for _ in range(4)]
     grid = add_block(grid)
+
+
+
 
     score = 0
 
@@ -23,10 +28,14 @@ def game_loop(player = "human"):
 
         for col in range(4):
             for row in range(4):
-                text = font_normal.render(str(grid[col][row]), 1, BLACK)
+                value = str(grid[col][row])
+                if value == "0":
+                    value = " "
+                text = font_normal.render(value, 1, BLACK)
                 background.blit(text, (100+50*row, 20+50*col))
 
-        rect = pygame.draw.rect(background, (0,0,0), (300, 60, 260, 50), 2)
+        board = pygame.draw.rect(background, BLACK, (80, 0, 200, 200), 2)
+        rect = pygame.draw.rect(background, (0, 0, 0), (300, 60, 260, 50), 2)
         background.blit(font_large.render("Score: " + str(score), 1, BLACK), (310, 70))
         pygame.display.update()
 
@@ -54,5 +63,11 @@ def game_loop(player = "human"):
 
         else:
             pass
+
     show_board(grid)
     print(score)
+
+
+def next_move(game, model):
+    game = np.array(game)
+    return model(game.reshape(16))

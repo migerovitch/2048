@@ -1,5 +1,6 @@
 from game import *
 
+
 def main():
     game_loop()
 
