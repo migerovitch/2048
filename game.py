@@ -3,11 +3,15 @@ import pygame
 from model import *
 import numpy as np
 import time
+from computer import *
+import random
+
 
 def game_loop(player="human"):
 
     # Initialize starting grid
     grid = [[0, 0, 0, 0] for _ in range(4)]
+    grid = add_block(grid)
     grid = add_block(grid)
     score = 0
 
@@ -57,8 +61,24 @@ def game_loop(player="human"):
         else:
             pass
 
+
+
     show_board(grid)
     print(score)
+
+
+def simulated_game():
+
+    grid = [[0, 0, 0, 0] for _ in range(4)]
+    grid = add_block(grid)
+    grid = add_block(grid)
+    score = 0
+    while not is_game_over(grid):
+        #k = random.choice([0, 1, 2, 3])
+        #grid, score = move(grid, score, k)
+        grid, score = move(grid, score, evaluate_board(grid))
+
+    return grid, score
 
 
 def show_game(grid, score):

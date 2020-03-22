@@ -4,15 +4,6 @@ import numpy as np
 
 
 def move(game, score=0, k=0):
-    """
-    game (list: 4x4) – the playing grid
-    score (int) – self-explanatory
-    k (int) – direction
-        0 --> right
-        1 --> down
-        2 --> left
-        3 --> up
-    """
     game = np.rot90(np.array(game), k)
 
     change = False
