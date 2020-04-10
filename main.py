@@ -1,29 +1,21 @@
 from game import *
 import numpy as np
 import pygame
-from computer import *
-import game
-from tqdm import tqdm
 
+#from computer import *
+from model import *
 
 
 def main():
-    # pygame.init()
-    total_score = 0
-    n = 10
-    for k in range(n):
-        score = simulated_game()[1]
-        total_score += score
-    print(total_score // n)
+    pygame.init()
+    new_game = Game()
+    new_game.game_loop("human")
+
 
 
 if __name__ == "__main__":
-    main()
+    pygame.init()
 
-    """
-    a = [[64, 32, 4, 0], [2, 4, 16, 32], [0, 0, 0, 0], [0, 0, 2, 0]]
-    show_game(a, 0)
-    games = branch_out(a)
-    for game in games:
-        show_game(game[0], game[1])
-    """
+    grid = [[0,0,0,0],[4,2,0,0],[8,2,2,0],[32,16,8,4]]
+
+    grid = np.array(grid).reshape(16)

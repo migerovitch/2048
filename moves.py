@@ -80,5 +80,5 @@ def is_game_over(game):
 
 
 def show_board(game):
-    for i in game:
-        print(i)
+    for row in game:
+        print(row)

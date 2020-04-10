@@ -1,8 +1,9 @@
 from moves import move
 from random import choice as choice
+from copy import deepcopy as copy
 
 def manhattan(tile1, tile2):
-  return abs(tile1[0] - tile2[0]) + abs(tile1[1] - tile2[1])
+    return abs(tile1[0] - tile2[0]) + abs(tile1[1] - tile2[1])
 
 
 def find_max_tile(grid):
@@ -51,11 +52,26 @@ def evaluate_board(board):
 
 
 
+
+
+def rec(arr, n, total, board):
+    possibilities = branch_out(board)
+
+    if n == total-1:
+        return possibilities
+
+    else:
+        arr = [None for _ in range(4)]
+        for k in range(4):
+            arr[k] = rec(arr[k], n+1, total, copy(possibilities[k]))
+
+    return arr
+
+
 def branch_out(grid, score=0):
-
     games = []
-
-    for k in range(3):
-        games.append(move(grid, score, k))
-
+    for k in range(4):
+        games.append(move(grid, score, k)[0])
     return games
+
+
