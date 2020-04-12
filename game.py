@@ -1,15 +1,16 @@
 from moves import *
-import pygame
 from model import *
-import numpy as np
-import time
 from computer import *
+
+import pygame
 import random
+import time
+import numpy as np
 
 
 class Game:
     def __init__(self, player="human"):
-        self.player = "human"
+        self.player = player
         self.grid = [[0, 0, 0, 0] for _ in range(4)]
         self.grid = add_block(add_block(self.grid))
         self.score = 0
@@ -19,7 +20,17 @@ class Game:
         self.font_large = pygame.font.Font(None, 50)
         self.BLACK = (10, 10, 10)
 
-    def game_loop(self, player):
+        if self.player == "eval":
+            self.model = MyModel()
+            self.eval_init()
+            print("hi")
+
+    def eval_init(self):
+        params = torch.load("models/test_model.pt")
+        self.model.load_state_dict(params)
+        self.model.eval()
+
+    def game_loop(self):
         while not is_game_over(self.grid):
 
             background = pygame.Surface(self.screen.get_size())
@@ -43,25 +54,43 @@ class Game:
             self.screen.blit(background, (0, 0))
             pygame.display.flip()
 
-            if player == "human":
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        return
-                    elif event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_RIGHT:
-                            self.grid, self.score = move(self.grid, self.score, 0)
-                        if event.key == pygame.K_DOWN:
-                            self.grid, self.score = move(self.grid, self.score, 1)
-                        if event.key == pygame.K_LEFT:
-                            self.grid, self.score = move(self.grid, self.score, 2)
-                        if event.key == pygame.K_UP:
-                            self.grid, self.score = move(self.grid, self.score, 3)
+            if self.player == "human":
+                self.player_turn()
+
+            if self.player == "eval":
+                self.eval_turn()
+                self.player_turn()
+
+            if self.player == "eval":
+                self.eval_turn()
+
             else:
-                pass
+                print(str(self.player))
 
-        show_board(self.grid)
-        print(self.score)
+    def eval_turn(self):
+        time.sleep(1)
 
+            else:
+                print(str(self.player))
+
+    def eval_turn(self):
+        time.sleep(1)
+        direction = self.model(self.grid)
+        self.grid, self.score = move(self.grid, self.score, direction)
+
+    def player_turn(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT:
+                    self.grid, self.score = move(self.grid, self.score, 0)
+                if event.key == pygame.K_DOWN:
+                    self.grid, self.score = move(self.grid, self.score, 1)
+                if event.key == pygame.K_LEFT:
+                    self.grid, self.score = move(self.grid, self.score, 2)
+                if event.key == pygame.K_UP:
+                    self.grid, self.score = move(self.grid, self.score, 3)
 
 def simulated_game():
 

@@ -1,4 +1,7 @@
 import torch.nn as nn
+import torch
+import numpy as np
+
 
 class MyModel(nn.Module):
     def __init__(self):
@@ -9,8 +12,12 @@ class MyModel(nn.Module):
         self.lin3 = nn.Linear(16, 4)
 
     def forward(self, game):
-        x = game
+        x = torch.from_numpy(np.array(game).reshape(16))
         x = self.lin1(x.float())
         x = self.lin2(x)
         x = self.lin3(x)
-        return x
+        return self.output(x)
+
+    def output(self, x):
+        x = x.tolist()
+        return x.index(max(x))
